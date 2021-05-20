@@ -1,0 +1,24 @@
+version: '3.6'
+
+services:
+
+  redis:
+    image: 'bitnami/redis:latest'
+    ports:
+      - 6379:6379
+    hostname: redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+
+  myapp-main:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: oneilltim/tims-url-shortener
+    restart: on-failure
+    depends_on:
+      - redis
+    links:
+      - redis
+    ports:
+      - 8090:8090
