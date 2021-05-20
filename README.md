@@ -8,7 +8,7 @@ Application deployed in AWS though not the Redis container, you could add a Elas
 
 ## To run the URL Shortener application:
 ```
-$ git clone 
-$ cd UrlShortener
+$ git clone https://github.com/oneilltim/tims-url-shortener.git
+$ cd tims-url-shortener
 $ docker-compose up
 ```
