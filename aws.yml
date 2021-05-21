@@ -1,0 +1,35 @@
+services:
+  myapp-main:
+    build:
+      context: C:\Users\oneil\tims-url-shortener\tims-url-shortener
+      dockerfile: C:\Users\oneil\tims-url-shortener\tims-url-shortener\Dockerfile
+    depends_on:
+      redis:
+        condition: service_started
+    image: oneilltim/tims-url-shortener
+    links:
+    - redis
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 8090
+      published: 8090
+      protocol: tcp
+    restart: on-failure
+  redis:
+    environment:
+      ALLOW_EMPTY_PASSWORD: "yes"
+    hostname: redis
+    image: bitnami/redis:latest
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 6379
+      published: 6379
+      protocol: tcp
+networks:
+  default:
+    name: tims-url-shortener_default
+
