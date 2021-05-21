@@ -9,6 +9,8 @@ services:
     hostname: redis
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      mynet
 
   myapp-main:
     build:
@@ -22,3 +24,9 @@ services:
       - redis
     ports:
       - 80:80
+    networks:
+      mynet
+
+  networks:
+    mynet:
+      driver: bridge
