@@ -21,124 +21,52 @@ $ docker-compose up
   e.g. http://localhost:80/rest/url/aec3dbe9
 
 ## Application in AWS:
-  AWS App URL: http://3.138.137.28:80/rest/url
-  Copy of JSON for AWS Task definition:
-  ```
-  {
-  "ipcMode": null,
-  "executionRoleArn": "arn:aws:iam::608827584923:role/ecsTaskExecutionRole",
-  "containerDefinitions": [
-    {
-      "dnsSearchDomains": null,
-      "environmentFiles": null,
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "secretOptions": null,
-        "options": {
-          "awslogs-group": "/ecs/first-run-task-definition",
-          "awslogs-region": "us-east-2",
-          "awslogs-stream-prefix": "ecs"
-        }
-      },
-      "entryPoint": [],
-      "portMappings": [
-        {
-          "hostPort": 80,
-          "protocol": "tcp",
-          "containerPort": 80
-        },
-        {
-          "hostPort": 6379,
-          "protocol": "tcp",
-          "containerPort": 6379
-        }
-      ],
-      "command": [],
-      "linuxParameters": null,
-      "cpu": 0,
-      "environment": [],
-      "resourceRequirements": null,
-      "ulimits": null,
-      "dnsServers": null,
-      "mountPoints": [],
-      "workingDirectory": null,
-      "secrets": null,
-      "dockerSecurityOptions": null,
-      "memory": null,
-      "memoryReservation": null,
-      "volumesFrom": [],
-      "stopTimeout": null,
-      "image": "oneilltim/tims-url-shortener",
-      "startTimeout": null,
-      "firelensConfiguration": null,
-      "dependsOn": null,
-      "disableNetworking": null,
-      "interactive": null,
-      "healthCheck": null,
-      "essential": true,
-      "links": [],
-      "hostname": null,
-      "extraHosts": null,
-      "pseudoTerminal": null,
-      "user": null,
-      "readonlyRootFilesystem": null,
-      "dockerLabels": null,
-      "systemControls": null,
-      "privileged": null,
-      "name": "tims-url-shortener-service"
-    }
-  ],
-  "placementConstraints": [],
-  "memory": "512",
-  "taskRoleArn": null,
-  "compatibilities": [
-    "EC2",
-    "FARGATE"
-  ],
-  "taskDefinitionArn": "arn:aws:ecs:us-east-2:608827584923:task-definition/first-run-task-definition:2",
-  "family": "first-run-task-definition",
-  "requiresAttributes": [
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "ecs.capability.execution-role-awslogs"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "ecs.capability.task-eni"
-    }
-  ],
-  "pidMode": null,
-  "requiresCompatibilities": [
-    "FARGATE"
-  ],
-  "networkMode": "awsvpc",
-  "cpu": "256",
-  "revision": 2,
-  "status": "ACTIVE",
-  "inferenceAccelerators": null,
-  "proxyConfiguration": null,
-  "volumes": []
-}
-  ```
+  To deploy to AWS I set my docker context to type:ecs and used docker compose up deploy to AWS:
+```
+>docker context create ecs myecscontext
+...
+Successfully created ecs context "myecscontext"
+>docker context ls
+NAME                TYPE                DESCRIPTION                               DOCKER ENDPOINT                  KUBERNETES ENDPOINT   ORCHESTRATOR
+default *           moby                Current DOCKER_HOST based configuration   npipe:////./pipe/docker_engine                         swarm
+myecscontext        ecs                 (eu-north-1)
+>docker context use myecscontext
+myecscontext
+>docker context ls
+NAME                TYPE                DESCRIPTION                               DOCKER ENDPOINT                  KUBERNETES ENDPOINT   ORCHESTRATOR
+default             moby                Current DOCKER_HOST based configuration   npipe:////./pipe/docker_engine                         swarm
+myecscontext *      ecs                 (eu-north-1)
+>docker compose up
+level=warning msg="services.hostname: unsupported attribute"
+level=warning msg="services.build: unsupported attribute"
+[+] Running 21/21="services.links: unsupported attribute"
+ - tims-url-shortener              CreateComplete                                                                358.4s
+ - Cluster                         CreateComplete                                                                  4.3s
+ - DefaultNetwork                  CreateComplete                                                                  3.3s
+ - MyappmainTCP8090TargetGroup     CreateComplete                                                                  0.0s
+ - RedisTCP6379TargetGroup         CreateComplete                                                                  0.0s
+ - LoadBalancer                    CreateComplete                                                                150.3s
+ - MyappmainTaskExecutionRole      CreateComplete                                                                 12.3s
+ - LogGroup                        CreateComplete                                                                  0.3s
+ - RedisTaskExecutionRole          CreateComplete                                                                 12.3s
+ - CloudMap                        CreateComplete                                                                 45.3s
+ - DefaultNetworkIngress           CreateComplete                                                                  1.0s
+ - Default8090Ingress              CreateComplete                                                                  1.0s
+ - Default6379Ingress              CreateComplete                                                                  1.0s
+ - MyappmainTaskDefinition         CreateComplete                                                                  2.0s
+ - RedisTaskDefinition             CreateComplete                                                                  3.0s
+ - RedisServiceDiscoveryEntry      CreateComplete                                                                  2.0s
+ - MyappmainServiceDiscoveryEntry  CreateComplete                                                                  3.0s
+ - RedisTCP6379Listener            CreateComplete                                                                  3.0s
+ - MyappmainTCP8090Listener        CreateComplete                                                                  4.0s
+ - RedisService                    CreateComplete                                                                 99.0s
+ - MyappmainService                CreateComplete                                                                 89.7s
+
+>docker compose ps
+NAME                                                       SERVICE             STATUS              PORTS
+task/tims-url-shortener/6aa149268de74d04a0b27c3ce99da5e5   myapp-main          Running             tims-LoadB-1DFAECFTCWS7C-21ccb31b0f9f4c8f.elb.us-east-1.amazonaws.com:8090->8090/tcp
+task/tims-url-shortener/d5e66234348a4db98bfa845821d4b032   redis               Running             tims-LoadB-1DFAECFTCWS7C-21ccb31b0f9f4c8f.elb.us-east-1.amazonaws.com:6379->6379/tcp
+
+```
+  AWS App URL: https://tims-LoadB-1DFAECFTCWS7C-21ccb31b0f9f4c8f.elb.us-east-1.amazonaws.com/rest/url
+
