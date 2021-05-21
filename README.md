@@ -17,11 +17,11 @@ $ docker-compose up
   You can use a REST API Client like ARC for Chrome SEND a POST request to the frollowing URL: http://localhost:8090/rest/url
   The body of the request should contain the URL that you want a Shorter Version of.
 ### Get the original URL given the Short verison
-  http://localhost:8090/rest/url/<shortURL>
-  e.g. http://localhost:8090/rest/url/aec3dbe9
+  http://localhost:80/rest/url/<shortURL>
+  e.g. http://localhost:80/rest/url/aec3dbe9
 
 ## Application in AWS:
-  AWS App URL: http://3.138.137.28:8090/rest/url
+  AWS App URL: http://3.138.137.28:80/rest/url
   Copy of JSON for AWS Task definition:
   ```
   {
@@ -43,9 +43,9 @@ $ docker-compose up
       "entryPoint": [],
       "portMappings": [
         {
-          "hostPort": 8090,
+          "hostPort": 80,
           "protocol": "tcp",
-          "containerPort": 8090
+          "containerPort": 80
         },
         {
           "hostPort": 6379,

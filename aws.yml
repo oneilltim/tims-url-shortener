@@ -13,8 +13,8 @@ services:
       default: null
     ports:
     - mode: ingress
-      target: 8090
-      published: 8090
+      target: 80
+      published: 80
       protocol: tcp
     restart: on-failure
   redis:
