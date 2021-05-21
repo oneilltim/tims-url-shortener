@@ -8,14 +8,14 @@ services:
         condition: service_started
     image: oneilltim/tims-url-shortener
     links:
-    - redis
+      - redis
     networks:
-      default: null
+      mynet: null
     ports:
-    - mode: ingress
-      target: 80
-      published: 80
-      protocol: tcp
+      - mode: ingress
+        target: 80
+        published: 80
+        protocol: tcp
     restart: on-failure
   redis:
     environment:
@@ -23,13 +23,15 @@ services:
     hostname: redis
     image: bitnami/redis:latest
     networks:
-      default: null
+      mynet: null
     ports:
-    - mode: ingress
-      target: 6379
-      published: 6379
-      protocol: tcp
+      - mode: ingress
+        target: 6379
+        published: 6379
+        protocol: tcp
 networks:
   default:
     name: tims-url-shortener_default
-
+  mynet:
+    name: tims-url-shortener_mynet
+    driver: bridge

@@ -1,4 +1,8 @@
-version: '3.6'
+version: '3'
+
+networks:
+    mynet:
+      driver: bridge
 
 services:
 
@@ -10,7 +14,7 @@ services:
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     networks:
-      mynet
+      - mynet
 
   myapp-main:
     build:
@@ -25,8 +29,4 @@ services:
     ports:
       - 80:80
     networks:
-      mynet
-
-  networks:
-    mynet:
-      driver: bridge
+      - mynet
