@@ -14,7 +14,7 @@ $ docker-compose up
 ```
 ## Access the Service:
 ### Create a Short URL:
-  You can use a REST API Client like ARC for Chrome SEND a POST request to the frollowing URL: http://localhost:8090/rest/url
+  You can use a REST API Client like ARC for Chrome SEND a POST request to the frollowing URL: http://localhost:80/rest/url
   The body of the request should contain the URL that you want a Shorter Version of.
 ### Get the original URL given the Short verison
   http://localhost:80/rest/url/<shortURL>
